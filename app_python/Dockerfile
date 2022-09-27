@@ -2,6 +2,7 @@ FROM python:3
 ENV PYTHONDONTWRITEBYTECODE=1
 ENV PYTHONUNBUFFERED=1
 ENV PYTHONPATH="/"
+WORKDIR /usr/src/app
 COPY requirements.txt /app_python/
 RUN pip install -r requirements.txt
 COPY . /app_python/

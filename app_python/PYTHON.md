@@ -19,3 +19,13 @@ Disadvantages:
 # Linters
 Mainly I used [Pylint](https://pypi.org/project/pylint/) and [mdl](https://github.com/markdownlint/markdownlint).
 Also, I used default Pycharm formatter.
+
+# Unit tests
+This app contains 2 tests:
+- `test_moscow_time()` is a unit test for verifying that returned time is of Moscow
+- `test_home_page_view()` is technically an integration test for testing that django view returns 200
+
+Best practices:
+- Creating separate directories for tests. Test file structure mirrors project structure
+- Keeping tests simple - they should test as isolated functionality as possible
+- Integrating testing into CI

@@ -7,11 +7,12 @@ Shows you current time in Moscow.
 - [Quick start](#quick-start)
 - [What's included](#whats-included)
 - [Docker](#docker)
+- [Unit tests](#unit-tests)
 - [Copyright and license](#copyright-and-license)
 
 ## Quick start
 
-Just clone the repo and run `app_python/moscowtime/manage.py runserver`.
+Just clone the repo and run `app_python/moscowtime/manage.py runserver`
 
 ## What's included
 
@@ -23,6 +24,12 @@ This application is published to docker hub. To run it use:
 ```
 docker pull ivan239/devops-labs
 docker run ivan239/devops-labs
+```
+
+## Unit tests
+Run application unit tests with:
+```
+app_python/moscowtime/manage.py test
 ```
 
 ## Copyright and license

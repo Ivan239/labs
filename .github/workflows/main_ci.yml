@@ -40,4 +40,4 @@ jobs:
 
     - name: Test
       run: |
-        moscowtime/manage.py test
+        python3 moscowtime/manage.py test

@@ -3,3 +3,8 @@ variable "instance_name" {
   type        = string
   default     = "ExampleAppServerInstance"
 }
+
+variable "deploy_public_key" {
+  description = "SSH public key"
+  type        = string
+}

@@ -1,0 +1,14 @@
+- name: Install docker
+  hosts: all
+  remote_user: ubuntu
+  become: true
+  roles:
+    - role: geerlingguy.docker
+      vars:
+        docker_service_state: started
+        docker_service_enabled: yes
+        docker_install_compose_plugin: true
+        docker_compose_package: docker-compose-plugin
+        docker_compose_package_state: present
+        docker_users:
+          - ubuntu

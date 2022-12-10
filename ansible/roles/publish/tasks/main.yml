@@ -1,0 +1,11 @@
+- name: Pull an image
+  community.docker.docker_image:
+    name: ivan239/moscowtime
+    source: pull
+    pull:
+      platform: amd64
+
+- name: Run application
+  community.docker.docker_container:
+    name: moscowtime
+    image: ivan239/moscowtime

@@ -12,3 +12,10 @@
         docker_compose_package_state: present
         docker_users:
           - ubuntu
+
+- name: Deploy application
+  hosts: all
+  remote_user: ubuntu
+  become: true
+  roles:
+    - role: publish

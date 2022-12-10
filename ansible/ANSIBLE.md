@@ -276,3 +276,118 @@ ec2-52-34-162-178.us-west-2.compute.amazonaws.com : ok=19   changed=7    unreach
     }
 }
 ```
+
+## ansible-playbook playbooks/dev/main.yml --diff
+```commandline
+PLAY [Install docker] ***********************************************************************************************************************************************************
+
+TASK [Gathering Facts] **********************************************************************************************************************************************************
+ok: [ec2-52-34-162-178.us-west-2.compute.amazonaws.com]
+
+TASK [geerlingguy.docker : Load OS-specific vars.] ******************************************************************************************************************************
+ok: [ec2-52-34-162-178.us-west-2.compute.amazonaws.com]
+
+TASK [geerlingguy.docker : include_tasks] ***************************************************************************************************************************************
+skipping: [ec2-52-34-162-178.us-west-2.compute.amazonaws.com]
+
+TASK [geerlingguy.docker : include_tasks] ***************************************************************************************************************************************
+included: /home/oibek/.ansible/roles/geerlingguy.docker/tasks/setup-Debian.yml for ec2-52-34-162-178.us-west-2.compute.amazonaws.com
+
+TASK [geerlingguy.docker : Ensure old versions of Docker are not installed.] ****************************************************************************************************
+ok: [ec2-52-34-162-178.us-west-2.compute.amazonaws.com]
+
+TASK [geerlingguy.docker : Ensure dependencies are installed.] ******************************************************************************************************************
+ok: [ec2-52-34-162-178.us-west-2.compute.amazonaws.com]
+
+TASK [geerlingguy.docker : Ensure additional dependencies are installed (on Ubuntu < 20.04 and any other systems).] *************************************************************
+skipping: [ec2-52-34-162-178.us-west-2.compute.amazonaws.com]
+
+TASK [geerlingguy.docker : Ensure additional dependencies are installed (on Ubuntu >= 20.04).] **********************************************************************************
+ok: [ec2-52-34-162-178.us-west-2.compute.amazonaws.com]
+
+TASK [geerlingguy.docker : Add Docker apt key.] *********************************************************************************************************************************
+ok: [ec2-52-34-162-178.us-west-2.compute.amazonaws.com]
+
+TASK [geerlingguy.docker : Ensure curl is present (on older systems without SNI).] **********************************************************************************************
+skipping: [ec2-52-34-162-178.us-west-2.compute.amazonaws.com]
+
+TASK [geerlingguy.docker : Add Docker apt key (alternative for older systems without SNI).] *************************************************************************************
+skipping: [ec2-52-34-162-178.us-west-2.compute.amazonaws.com]
+
+TASK [geerlingguy.docker : Add Docker repository.] ******************************************************************************************************************************
+ok: [ec2-52-34-162-178.us-west-2.compute.amazonaws.com]
+
+TASK [geerlingguy.docker : Install Docker packages.] ****************************************************************************************************************************
+skipping: [ec2-52-34-162-178.us-west-2.compute.amazonaws.com]
+
+TASK [geerlingguy.docker : Install Docker packages (with downgrade option).] ****************************************************************************************************
+ok: [ec2-52-34-162-178.us-west-2.compute.amazonaws.com]
+
+TASK [geerlingguy.docker : Install docker-compose plugin.] **********************************************************************************************************************
+skipping: [ec2-52-34-162-178.us-west-2.compute.amazonaws.com]
+
+TASK [geerlingguy.docker : Install docker-compose-plugin (with downgrade option).] **********************************************************************************************
+ok: [ec2-52-34-162-178.us-west-2.compute.amazonaws.com]
+
+TASK [geerlingguy.docker : Ensure /etc/docker/ directory exists.] ***************************************************************************************************************
+skipping: [ec2-52-34-162-178.us-west-2.compute.amazonaws.com]
+
+TASK [geerlingguy.docker : Configure Docker daemon options.] ********************************************************************************************************************
+skipping: [ec2-52-34-162-178.us-west-2.compute.amazonaws.com]
+
+TASK [geerlingguy.docker : Ensure Docker is started and enabled at boot.] *******************************************************************************************************
+ok: [ec2-52-34-162-178.us-west-2.compute.amazonaws.com]
+
+TASK [geerlingguy.docker : Ensure handlers are notified now to avoid firewall conflicts.] ***************************************************************************************
+
+TASK [geerlingguy.docker : include_tasks] ***************************************************************************************************************************************
+included: /home/oibek/.ansible/roles/geerlingguy.docker/tasks/docker-compose.yml for ec2-52-34-162-178.us-west-2.compute.amazonaws.com
+
+TASK [geerlingguy.docker : Check current docker-compose version.] ***************************************************************************************************************
+ok: [ec2-52-34-162-178.us-west-2.compute.amazonaws.com]
+
+TASK [geerlingguy.docker : set_fact] ********************************************************************************************************************************************
+ok: [ec2-52-34-162-178.us-west-2.compute.amazonaws.com]
+
+TASK [geerlingguy.docker : Delete existing docker-compose version if it's different.] *******************************************************************************************
+skipping: [ec2-52-34-162-178.us-west-2.compute.amazonaws.com]
+
+TASK [geerlingguy.docker : Install Docker Compose (if configured).] *************************************************************************************************************
+skipping: [ec2-52-34-162-178.us-west-2.compute.amazonaws.com]
+
+TASK [geerlingguy.docker : Get docker group info using getent.] *****************************************************************************************************************
+ok: [ec2-52-34-162-178.us-west-2.compute.amazonaws.com]
+
+TASK [geerlingguy.docker : Check if there are any users to add to the docker group.] ********************************************************************************************
+skipping: [ec2-52-34-162-178.us-west-2.compute.amazonaws.com] => (item=ubuntu)
+skipping: [ec2-52-34-162-178.us-west-2.compute.amazonaws.com]
+
+TASK [geerlingguy.docker : include_tasks] ***************************************************************************************************************************************
+skipping: [ec2-52-34-162-178.us-west-2.compute.amazonaws.com]
+
+PLAY [Deploy application] *******************************************************************************************************************************************************
+
+TASK [Gathering Facts] **********************************************************************************************************************************************************
+ok: [ec2-52-34-162-178.us-west-2.compute.amazonaws.com]
+
+TASK [publish : Pull an image] **************************************************************************************************************************************************
+ok: [ec2-52-34-162-178.us-west-2.compute.amazonaws.com]
+
+TASK [publish : Run application] ************************************************************************************************************************************************
+--- before
++++ after
+@@ -1,4 +1,4 @@
+ {
+-    "exists": false,
+-    "running": false
++    "exists": true,
++    "running": true
+ }
+
+changed: [ec2-52-34-162-178.us-west-2.compute.amazonaws.com]
+
+PLAY RECAP **********************************************************************************************************************************************************************
+ec2-52-34-162-178.us-west-2.compute.amazonaws.com : ok=18   changed=1    unreachable=0    failed=0    skipped=12   rescued=0    ignored=0
+```
+
+After deploying new role, I could check running application in aws ec2, so it's working!

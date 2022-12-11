@@ -13,7 +13,6 @@ services:
     image: ivan239/moscowtime:latest
     ports:
       - "8000:8000"
-#    command: [ "--verbosity", "3" ]
     logging: *logger
 
   loki:

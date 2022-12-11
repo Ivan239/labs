@@ -42,3 +42,16 @@ services:
     networks:
       - loki
     logging: *logger
+
+  prometheus:
+    image: prom/prometheus:v2.39.1
+    container_name: prometheus
+    volumes:
+      - ./prometheus.yaml:/etc/prometheus/prometheus.yml:ro
+    command:
+      - --config.file=/etc/prometheus/prometheus.yml
+#      - --storage.tsdb.retention.time=7d
+    ports:
+      - "9090:9090"
+    networks:
+      - loki

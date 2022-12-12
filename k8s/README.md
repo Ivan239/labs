@@ -101,3 +101,72 @@ NAME                         TYPE           CLUSTER-IP       EXTERNAL-IP   PORT(
 service/kubernetes           ClusterIP      10.96.0.1        <none>        443/TCP          10m
 service/moscowtime-service   LoadBalancer   10.105.111.190   <pending>     8000:32766/TCP   102s
 ```
+
+# Helm
+First, I created templates:
+```shell
+> helm create moscowtime
+Creating moscowtime
+```
+Then I edited values.yaml to replace repository:
+```yaml
+image:
+  repository: ivan239/moscowtime
+  pullPolicy: IfNotPresent
+  # Overrides the image tag whose default is the chart appVersion.
+  tag: "latest"
+service:
+  type: NodePort
+  container_port: 8000
+  out_port: 8000
+```
+Also changed ports in deployment.yaml and service.yaml:
+```yaml
+ports:
+  - containerPort: { { .Values.service.container_port } }
+```
+```yaml
+ports:
+  - port: { { .Values.service.out_port } }
+    targetPort: { { .Values.service.container_port } }
+```
+Finally, I packaged and installed:
+```shell
+> helm package moscowtime && helm install moscowtime moscowtime-0.1.0.tgz
+Successfully packaged chart and saved it to: C:\Users\oibek\PycharmProjects\devops-labs\k8s\moscowtime-0.1.0.tgz
+NAME: moscowtime
+LAST DEPLOYED: Mon Dec 12 09:41:52 2022
+NAMESPACE: default
+STATUS: deployed
+REVISION: 1
+NOTES:
+1. Get the application URL by running these commands:
+  export NODE_PORT=$(kubectl get --namespace default -o jsonpath="{.spec.ports[0].nodePort}" services moscowtime)
+  export NODE_IP=$(kubectl get nodes --namespace default -o jsonpath="{.items[0].status.addresses[0].address}")
+  echo http://$NODE_IP:$NODE_PORT
+```
+After that, I can check it worked:
+```shell
+> minikube service moscowtime
+|-----------|------------|-------------|---------------------------|
+| NAMESPACE |    NAME    | TARGET PORT |            URL            |
+|-----------|------------|-------------|---------------------------|
+| default   | moscowtime | http/8000   | http://192.168.49.2:30317 |
+|-----------|------------|-------------|---------------------------|
+🏃  Starting tunnel for service moscowtime.
+|-----------|------------|-------------|------------------------|
+| NAMESPACE |    NAME    | TARGET PORT |          URL           |
+|-----------|------------|-------------|------------------------|
+| default   | moscowtime |             | http://127.0.0.1:51449 |
+|-----------|------------|-------------|------------------------|
+```
+```shell
+> kubectl get pods,svc
+NAME                              READY   STATUS    RESTARTS   AGE
+pod/moscowtime-557487955f-k9cvm   1/1     Running   0          21s
+
+NAME                 TYPE        CLUSTER-IP     EXTERNAL-IP   PORT(S)          AGE
+service/kubernetes   ClusterIP   10.96.0.1      <none>        443/TCP          9h
+service/moscowtime   NodePort    10.97.37.144   <none>        8000:32412/TCP   21s
+```
+![img.png](img.png)

@@ -46,7 +46,23 @@ spec:
 #              path: /
 #              port: http
           resources:
-            {{- toYaml .Values.resources | nindent 12 }}
+            requests:
+              memory: "{{ .Values.resources.requests.memory }}"
+              cpu: "{{ .Values.resources.requests.cpu }}"
+            limits:
+              memory: "{{ .Values.resources.limits.memory }}"
+              cpu: "{{ .Values.resources.limits.cpu }}"
+#            env:
+#              - name: HELM_USER
+#                valueFrom:
+#                  secretKeyRef:
+#                    name: moscowtime-secret2
+#                    key: user
+#              - name: HELM_PASS
+#                valueFrom:
+#                  secretKeyRef:
+#                    name: moscowtime-secret2
+#                    key: pass
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}

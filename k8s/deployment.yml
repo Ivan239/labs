@@ -17,6 +17,6 @@ spec:
     spec:
       containers:
         - name: moscowtime
-          image: ivan239/moscowtime:latest
+          image: ivan239/moscowtime:persistent
           ports:
             - containerPort: 8000

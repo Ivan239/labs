@@ -69,9 +69,22 @@ spec:
               mountPath: {{ .Values.volumes.configuration.mountPath }}
               subPath: {{ .Values.volumes.configuration.subPath }}
       volumes:
+        - name: test
+          emptyDir: {}
         - name: {{ .Values.volumes.configuration.name }}
           configMap:
             name: {{ include "moscowtime.fullname" . }}-config
+      initContainers:
+          - name: test
+            image: busybox:1.28
+            command:
+              - wget
+              - "-O"
+              - "/app/test/index.html"
+              - http://info.cern.ch
+            volumeMounts:
+              - name: test
+                mountPath: "/app/test/"
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}

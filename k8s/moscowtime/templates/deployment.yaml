@@ -63,6 +63,14 @@ spec:
 #                  secretKeyRef:
 #                    name: moscowtime-secret2
 #                    key: pass
+          volumeMounts:
+            - name: config-volume
+              mountPath: /app/config.json
+              subPath: config.json
+      volumes:
+        - name: config-volume
+          configMap:
+            name: {{ include "moscowtime.fullname" . }}-config
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}

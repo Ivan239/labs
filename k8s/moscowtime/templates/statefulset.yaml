@@ -1,10 +1,11 @@
 apiVersion: apps/v1
-kind: Deployment
+kind: StatefulSet
 metadata:
   name: {{ include "moscowtime.fullname" . }}
   labels:
     {{- include "moscowtime.labels" . | nindent 4 }}
 spec:
+  podManagementPolicy: "Parallel"
   {{- if not .Values.autoscaling.enabled }}
   replicas: {{ .Values.replicaCount }}
   {{- end }}
@@ -36,7 +37,7 @@ spec:
           ports:
             - name: http
               containerPort: {{ .Values.service.container_port }}
-              protocol: TCP
+              protocol: {{ .Values.service.protocol }}
 #          livenessProbe:
 #            httpGet:
 #              path: /
@@ -64,11 +65,11 @@ spec:
 #                    name: moscowtime-secret2
 #                    key: pass
           volumeMounts:
-            - name: config-volume
-              mountPath: /app/config.json
-              subPath: config.json
+            - name: {{ .Values.volumes.configuration.name }}
+              mountPath: {{ .Values.volumes.configuration.mountPath }}
+              subPath: {{ .Values.volumes.configuration.subPath }}
       volumes:
-        - name: config-volume
+        - name: {{ .Values.volumes.configuration.name }}
           configMap:
             name: {{ include "moscowtime.fullname" . }}-config
       {{- with .Values.nodeSelector }}
@@ -83,3 +84,10 @@ spec:
       tolerations:
         {{- toYaml . | nindent 8 }}
       {{- end }}
+  volumeClaimTemplates:
+    - metadata:
+        name: {{ .Values.volumes.storage.name }}
+      {{ - with .Values.volumes.storage.spec }}
+      spec:
+        {{ - toYaml . | nindent 8 }}
+      {{ - end }}

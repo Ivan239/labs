@@ -2,13 +2,13 @@
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
 
-replicaCount: 1
+replicaCount: 2
 
 image:
   repository: ivan239/moscowtime
   pullPolicy: IfNotPresent
   # Overrides the image tag whose default is the chart appVersion.
-  tag: "latest"
+  tag: "persistent"
 
 imagePullSecrets: []
 nameOverride: ""
@@ -40,6 +40,7 @@ service:
   type: NodePort
   container_port: 8000
   out_port: 8000
+  protocol: TCP
 
 ingress:
   enabled: false
@@ -71,6 +72,21 @@ autoscaling:
   maxReplicas: 100
   targetCPUUtilizationPercentage: 80
   # targetMemoryUtilizationPercentage: 80
+
+volumes:
+  configuration:
+    name: config-volume
+    mountPath: /app/config.json
+    subPath: config.json
+  storage:
+    name: persistent-volume
+    mountPath: /storage
+    spec:
+      accessModes: [ "ReadWriteOnce" ]
+      storageClass: ""
+      resources:
+        requests:
+          storage: 128Mi
 
 nodeSelector: {}
 
